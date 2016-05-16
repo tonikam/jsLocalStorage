@@ -1,8 +1,18 @@
+/**
+ * This file provides all functionality for the local storage example.
+ *
+ * @version 1.0
+ *
+ */
 
 var cas = cas || {};
 cas.fee = cas.fee || {};
 cas.fee.helper = {
 
+	/**
+  * Initialize application.
+  * 
+  */
 	init: function () {
 		var button = document.getElementById('addNote');
 		button.onclick = cas.fee.helper.addNote;
@@ -15,7 +25,11 @@ cas.fee.helper = {
 			cas.fee.helper.addToDOM(noteID, value);
 		}
 	},
-
+	
+	/**
+  * Read notes from local storage.
+  * @return {Object} JSON Array
+  */
 	getNotes: function () {
 		var notesArray = localStorage.getItem('notesArray');
 		if (!notesArray) {
@@ -26,11 +40,13 @@ cas.fee.helper = {
 		}
 		return notesArray;
 	},
-
+	/**
+  * Add note to local storage.
+  * 
+  */
 	addNote: function () {
 		var notesArray = cas.fee.helper.getNotes();
-		var value = document.getElementById('inputNote')
-			.value;
+		var value = document.getElementById('inputNote').value;
 		if (value != '') {
 			var currentDate = new Date();
 			var noteID = 'note' + currentDate.getTime()
@@ -47,9 +63,12 @@ cas.fee.helper = {
 			alert('Bitte geben Sie etwas ein!');
 		}
 	},
-
-	deleteNote: function (e) {
-		var noteID = e.target.id;
+	/**
+  * Delete note from local storage.
+  * @param {Object} element DOM element 
+  */
+	deleteNote: function (element) {
+		var noteID = element.target.id;
 		var notesArray = cas.fee.helper.getNotes();
 		if (notesArray) {
 			for (var i = 0; i < notesArray.length; i++) {
@@ -62,7 +81,11 @@ cas.fee.helper = {
 			cas.fee.helper.deleteFromDOM(noteID);
 		}
 	},
-
+	/**
+  * Add note to DOM.
+  * @param {String} nodeID note identifier
+	* @param {Object} ItemObj object containing value information
+  */
 	addToDOM: function (noteID, ItemObj) {
 		var notes = document.getElementById('notes');
 		var eintrag = document.createElement('li');
@@ -71,12 +94,17 @@ cas.fee.helper = {
 		notes.appendChild(eintrag);
 		eintrag.onclick = cas.fee.helper.deleteNote;
 	},
-
+	/**
+  * Delete note from DOM.
+  * @param {String} nodeID note identifier
+  */
 	deleteFromDOM: function (noteID) {
 		var eintrag = document.getElementById(noteID);
 		eintrag.parentNode.removeChild(eintrag);
 	},
-
+	/**
+  * Delete all notes from local storage and DOM.
+  */
 	deleteAll: function () {
 		localStorage.clear();
 		var ItemList = document.getElementById('notes');
